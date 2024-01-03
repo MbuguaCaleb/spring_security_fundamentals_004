@@ -21,29 +21,17 @@ public class SecurityConfig  {
     //1.I am configuring the http basic filter as my app runs (Everything including its basic authentication filter)
     //2. just before requests are forwarded to that filter,i am telling spring security to run my custom filter
     //N.B This is creating the security configuration for my Application
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http){
-//        return http.httpBasic()
-//                .and()
-//                .addFilterBefore(new ApiKeyFilter(key), BasicAuthenticationFilter.class)
-//                .authorizeRequests().anyRequest().authenticated() //means all endpoints will be authenitcated
-//                //.and().authenticationManager() // Very powerful, i can override authentication manager from this method or i can add a bean of type AuthenticationManager in my Context.     //Good design (Have one authentication manager that will then delegate to my Provider)
-//                //.and().authenticationProvider()//It doesnt override the AP, it adds one more to the collection
-//                .build();
-//    }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests((authorizeRequests) ->
-                        authorizeRequests
-                                .anyRequest().authenticated()
-                )
-                .addFilterBefore(new ApiKeyFilter(key),BasicAuthenticationFilter.class)
-                .httpBasic(withDefaults());
-
-        return http.build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http){
+        return http.httpBasic()
+                .and()
+                .addFilterBefore(new ApiKeyFilter(key), BasicAuthenticationFilter.class)
+                .authorizeRequests().anyRequest().authenticated() //means all endpoints will be authenitcated
+                //.and().authenticationManager() // Very powerful, i can override authentication manager from this method or i can add a bean of type AuthenticationManager in my Context.     //Good design (Have one authentication manager that will then delegate to my Provider)
+                //.and().authenticationProvider()//It doesnt override the AP, it adds one more to the collection
+                .build();
     }
+
 
 
 }
